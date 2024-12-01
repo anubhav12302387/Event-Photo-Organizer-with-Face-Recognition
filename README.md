@@ -35,7 +35,7 @@ This project automates the process of organizing event photos by recognizing par
 
 1. **Clone the Repository**:  
    ```bash  
-   git clone https://github.com/yourusername/event-photo-organizer.git  
+   git clone https://github.com/anubhav12302387/Event-Photo-Organizer-with-Face-Recognition.git
    cd event-photo-organizer  
 
 2. **Set Up a Virtual Environment:**
