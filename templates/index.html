@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Photo Organizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Event Photo Organizer</h1>
+            <p>Upload a photo and we’ll organize it based on face recognition.</p>
+        </header>
+
+        <div class="upload-container">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileInput" accept="image/*" required>
+                <button type="submit" id="uploadButton">Upload</button>
+            </form>
+        </div>
+
+        <div id="response" class="response">
+            <!-- This will show the response from the server -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

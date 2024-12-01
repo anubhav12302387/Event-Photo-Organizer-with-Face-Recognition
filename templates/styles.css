@@ -1,0 +1,85 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container styling */
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+/* Header styling */
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Upload form styling */
+.upload-container {
+    margin-top: 20px;
+}
+
+#fileInput {
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#uploadButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+#uploadButton:hover {
+    background-color: #45a049;
+}
+
+/* Response styling */
+.response {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.success {
+    background-color: #e7f9e7;
+    color: #4CAF50;
+}
+
+.error {
+    background-color: #f9e7e7;
+    color: #f44336;
+}

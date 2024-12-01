@@ -1,40 +1,30 @@
-from flask import Flask, request, jsonify, render_template
-import os
-from werkzeug.utils import secure_filename
 import face_recognition
+import os
 
-app = Flask(__name__)
-
-# Configure upload folder
-UPLOAD_FOLDER = './uploads'
+# Directories for reference photos and organized photos
 REFERENCE_DIR = './reference_photos'
 ORGANISED_DIR = './organised_photos'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# Ensure required directories exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(REFERENCE_DIR, exist_ok=True)
-os.makedirs(ORGANISED_DIR, exist_ok=True)
-
-# Helper function to validate file extensions
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# Function to process uploaded images
 def process_uploaded_image(file_path):
+    """
+    Processes the uploaded image to find a matching face in the reference photos
+    and organizes it into the appropriate folder.
+
+    :param file_path: Path to the uploaded image file.
+    """
     try:
         uploaded_image = face_recognition.load_image_file(file_path)
         uploaded_face_encodings = face_recognition.face_encodings(uploaded_image)
 
         if not uploaded_face_encodings:
+            print("No faces found in the uploaded image.")
             return {"message": "No faces found in the uploaded image."}
 
         uploaded_face_encoding = uploaded_face_encodings[0]
 
         for reference_image_name in os.listdir(REFERENCE_DIR):
             reference_image_path = os.path.join(REFERENCE_DIR, reference_image_name)
+
 
             if not reference_image_name.lower().endswith(('png', 'jpg', 'jpeg')):
                 continue
@@ -43,50 +33,28 @@ def process_uploaded_image(file_path):
             reference_face_encodings = face_recognition.face_encodings(reference_image)
 
             if not reference_face_encodings:
+                print(f"No faces found in reference image: {reference_image_name}")
                 continue
 
             reference_face_encoding = reference_face_encodings[0]
 
+            
             results = face_recognition.compare_faces([reference_face_encoding], uploaded_face_encoding)
 
             if results[0]:
+               
                 matched_dir = os.path.join(ORGANISED_DIR, reference_image_name.split('.')[0])
                 os.makedirs(matched_dir, exist_ok=True)
 
+                
                 new_file_path = os.path.join(matched_dir, os.path.basename(file_path))
                 os.rename(file_path, new_file_path)
+                print(f"Moved {file_path} to {new_file_path}")
                 return {"message": f"File moved to {matched_dir}", "matched_with": reference_image_name}
 
+        print("No matching faces found.")
         return {"message": "No matching faces found."}
 
     except Exception as e:
+        print(f"An error occurred: {e}")
         return {"error": str(e)}
-
-# Route for home page
-@app.route('/')
-def index():
-    return render_template('index.html')  # Renders the index.html template
-
-# Route to handle file uploads
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    if not allowed_file(file.filename):
-        return jsonify({"error": "Invalid file type"}), 400
-
-    filename = secure_filename(file.filename)
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(file_path)
-
-    # Process the uploaded image
-    result = process_uploaded_image(file_path)
-    return jsonify(result)
-
-if __name__ == '__main__':
-    app.run(debug=True)
