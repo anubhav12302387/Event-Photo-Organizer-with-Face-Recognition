@@ -14,6 +14,12 @@
             <p>Upload a photo and we’ll organize it based on face recognition.</p>
         </header>
 
+ 
+        <div class="tooltip">
+           <b> Need help? </b>
+            <span class="tooltiptext">Select a clear photo for accurate face recognition.</span>
+        </div>
+
         <div class="upload-container">
             <form id="uploadForm" enctype="multipart/form-data">
                 <input type="file" name="file" id="fileInput" accept="image/*" required>
@@ -21,8 +27,35 @@
             </form>
         </div>
 
-        <div id="response" class="response">
-            <!-- This will show the response from the server -->
+
+        <div id="loadingIndicator" class="loading hidden">Uploading...</div>
+
+        <div id="response" class="response hidden">
+            <h3>Response:</h3>
+            <p id="responseMessage">Sucessfully Uploaded</p>
+        </div>
+
+        </div>
+
+        <!-- Matched image preview -->
+              <h3>Matched Image:</h3>
+
+            <img id="matchedImage" src="" alt="Matched Face Preview" class="matched-image">
+
+         </div>
+
+            <img id="matchedImage" src="" alt="Matched Face Preview" class="matched-image">
+        </div>
+
+        <!-- Feedback area -->
+              <p id="feedbackMessage"></p>
+
+            <button id="retryButton" class="hidden">Try Again</button>
+
+         </div>
+
+
+        </div>
         </div>
     </div>
 

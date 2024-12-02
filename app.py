@@ -55,7 +55,11 @@ def process_uploaded_image(file_path):
 
                 new_file_path = os.path.join(matched_dir, os.path.basename(file_path))
                 os.rename(file_path, new_file_path)
-                return {"message": f"File moved to {matched_dir}", "matched_with": reference_image_name}
+                return {
+                    "message": f"File moved to {matched_dir}",
+                    "matched_with": reference_image_name,
+                    "preview_url": f"/preview/{reference_image_name}"
+                }
 
         return {"message": "No matching faces found."}
 
@@ -87,6 +91,14 @@ def upload_file():
     # Process the uploaded image
     result = process_uploaded_image(file_path)
     return jsonify(result)
+
+# Route to preview reference images
+@app.route('/preview/<filename>', methods=['GET'])
+def preview_file(filename):
+    reference_image_path = os.path.join(REFERENCE_DIR, filename)
+    if os.path.exists(reference_image_path):
+        return app.send_static_file(reference_image_path)
+    return jsonify({"error": "Image not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
