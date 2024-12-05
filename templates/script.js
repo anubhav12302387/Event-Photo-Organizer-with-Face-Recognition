@@ -1,4 +1,4 @@
-const SERVER_URL = "http://127.0.0.1:5000/upload"; // Use a constant for server URL
+const SERVER_URL = "http://127.0.0.1:5000/upload"; 
 
 document.getElementById('uploadForm').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -6,10 +6,11 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     const responseDiv = document.getElementById('response');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const responseMessage = document.getElementById('responseMessage');
 
-    // Reset response div
     responseDiv.classList.remove('error', 'success');
-    responseDiv.textContent = ''; // Clear previous messages
+    responseMessage.textContent = ''; 
 
     if (!file) {
         alert("Please select a file to upload.");
@@ -19,10 +20,9 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
     const formData = new FormData();
     formData.append("file", file);
 
-    // Show loading feedback
-    responseDiv.textContent = "Uploading... Please wait.";
-    responseDiv.classList.add('loading'); // Add a class for potential spinner styling
-    toggleFormState(true); // Disable form elements
+    loadingIndicator.classList.remove('hidden');
+    responseDiv.classList.add('hidden');
+    toggleFormState(true); 
 
     fetch(SERVER_URL, {
         method: "POST",
@@ -30,24 +30,27 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
     })
         .then((response) => response.json())
         .then((data) => {
-            responseDiv.classList.remove('error', 'success', 'loading'); // Reset classes
+            loadingIndicator.classList.add('hidden');
+            responseDiv.classList.remove('error', 'success', 'loading'); 
 
             if (data.error) {
                 responseDiv.classList.add('error');
-                responseDiv.textContent = `Error: ${data.error}`;
+                responseMessage.textContent = `Error: ${data.error}`;
             } else {
                 responseDiv.classList.add('success');
-                responseDiv.innerHTML = `Success: ${data.message}<br>Matched with: ${data.matched_with || 'N/A'}`;
+                responseMessage.innerHTML = `Success: ${data.message}<br>Matched with: ${data.matched_with || 'N/A'}`;
             }
+            responseDiv.classList.remove('hidden');
         })
         .catch((error) => {
             console.error("Error uploading file:", error);
-            responseDiv.classList.remove('loading');
+            loadingIndicator.classList.add('hidden');
             responseDiv.classList.add('error');
-            responseDiv.textContent = "An error occurred during upload.";
+            responseMessage.textContent = "An error occurred during upload.";
+            responseDiv.classList.remove('hidden');
         })
         .finally(() => {
-            toggleFormState(false); // Re-enable form elements
+            toggleFormState(false); 
         });
 });
 
