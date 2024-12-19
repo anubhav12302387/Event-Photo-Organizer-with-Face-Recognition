@@ -1,4 +1,4 @@
-# Event Photo Organizer with Face Recognition  
+# PixTrove with Face Recognition  
 
 This project automates the process of organizing event photos by recognizing participants' faces. During registration, participants provide a reference photo. After the event, the system processes the uploaded photos, matches faces with the reference images, and organizes them into separate folders named after each participant.  
 
@@ -29,7 +29,11 @@ This project automates the process of organizing event photos by recognizing par
   - [OpenCV](https://opencv.org/) or [Dlib](http://dlib.net/) for face detection and recognition.  
   - [DeepFace](https://github.com/serengil/deepface) for enhanced face matching capabilities.  
 - **Framework**: Flask/Django (optional, for a web interface).  
-- **Storage**: Local file system or cloud storage for scalable deployment.  
+- **Storage**: Local file system or cloud storage for scalable deployment.
+
+- **Frontend**:
+  - **NextJS**
+  - **Tailwind CSS**
 
 ## Installation  
 
